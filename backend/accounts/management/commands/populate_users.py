@@ -1,5 +1,7 @@
 from django.core.management import BaseCommand
+
 from accounts.factories import BaseUserFactory
+
 
 class Command(BaseCommand):
     help = "Populate database with users"

@@ -1,5 +1,6 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
+
 class IsAdminOrRestrictedAccess(BasePermission):
     def has_permission(self, request, view):
         # Allow all authenticated users to access the view
@@ -19,4 +20,3 @@ class IsAdminOrRestrictedAccess(BasePermission):
             return obj.username == request.user.username
 
         return False
-

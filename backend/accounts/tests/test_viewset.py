@@ -1,10 +1,8 @@
 import pytest
-from rest_framework import status
 from django.contrib.auth import get_user_model
+from rest_framework import status
 
 User = get_user_model()
-
-
 
 
 @pytest.mark.django_db
@@ -64,6 +62,7 @@ def test_create_user_as_admin_validate_data(api_client, admin, admin_token, url,
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert response.data["username"][0] == "A user with that username already exists."
 
+
 @pytest.mark.django_db
 def test_update_user_as_admin(api_client, admin, admin_token, detail_url, valid_put_data, user, valid_patch_data):
     api_client.credentials(HTTP_AUTHORIZATION=f"Token {admin_token}")
@@ -82,6 +81,7 @@ def test_update_user_as_admin(api_client, admin, admin_token, detail_url, valid_
     assert user.last_name == valid_patch_data["last_name"]
     assert user.email == valid_patch_data["email"]
 
+
 @pytest.mark.django_db
 def test_update_user_as_user(api_client, user, detail_url, valid_put_data, valid_patch_data):
     api_client.force_authenticate(user)
@@ -98,6 +98,7 @@ def test_update_user_as_user(api_client, user, detail_url, valid_put_data, valid
     assert user.last_name == valid_patch_data["last_name"]
     assert user.email == valid_patch_data["email"]
 
+
 @pytest.mark.django_db
 def test_update_user_as_user_validate_data(api_client, user, detail_url, invalid_put_data, invalid_patch_data):
     api_client.force_authenticate(user)
@@ -106,10 +107,10 @@ def test_update_user_as_user_validate_data(api_client, user, detail_url, invalid
 
     assert response.data["password"][0] == "This field is required."
 
-
     response = api_client.patch(detail_url, invalid_patch_data)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert response.data["email"][0] == "This field must be unique."
+
 
 @pytest.mark.django_db
 def test_update_user_get_404_not_found(api_client, detail_url, users, valid_put_data, valid_patch_data):
@@ -121,6 +122,7 @@ def test_update_user_get_404_not_found(api_client, detail_url, users, valid_put_
     response = api_client.patch(detail_url, valid_patch_data)
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
+
 @pytest.mark.django_db
 def test_delete_user_as_admin(api_client, user, detail_url, admin_token):
     api_client.credentials(HTTP_AUTHORIZATION=f"Token {admin_token}")
@@ -128,12 +130,14 @@ def test_delete_user_as_admin(api_client, user, detail_url, admin_token):
     assert response.status_code == status.HTTP_204_NO_CONTENT
     assert User.objects.filter(username=user.username).exists() == False
 
+
 @pytest.mark.django_db
 def test_delete_user_as_user(api_client, user, detail_url):
     api_client.force_authenticate(user)
     response = api_client.delete(detail_url)
     assert response.status_code == status.HTTP_204_NO_CONTENT
     assert User.objects.filter(id=user.id).exists() == False
+
 
 @pytest.mark.django_db
 def test_delete_user_get_404_not_found(api_client, detail_url, users):

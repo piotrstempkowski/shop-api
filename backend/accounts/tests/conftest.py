@@ -1,8 +1,10 @@
 import pytest
 from django.urls import reverse
-from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
+from rest_framework.test import APIClient
+
 from accounts.factories import BaseUserFactory
+
 
 @pytest.fixture
 def api_client():
@@ -16,6 +18,7 @@ def admin():
     admin.save()
     return admin
 
+
 @pytest.fixture
 def post_data():
     new_user = BaseUserFactory.build()
@@ -28,6 +31,7 @@ def post_data():
     }
     return data
 
+
 @pytest.fixture
 def invalid_post_data(user):
     data = {
@@ -38,6 +42,7 @@ def invalid_post_data(user):
         "password": user.password
     }
     return data
+
 
 @pytest.fixture
 def valid_put_data(user):
@@ -51,15 +56,17 @@ def valid_put_data(user):
     }
     return data
 
+
 @pytest.fixture
 def invalid_put_data(user):
     data = {
         "username": user.username,
-        "email":user.email,
+        "email": user.email,
         "first_name": user.first_name,
 
     }
     return data
+
 
 @pytest.fixture
 def valid_patch_data():
@@ -71,9 +78,10 @@ def valid_patch_data():
     }
     return data
 
+
 @pytest.fixture
 def invalid_patch_data(users):
-    other_user_data =users[3]
+    other_user_data = users[3]
     data = {
         "first_name": other_user_data.first_name,
         "last_name": other_user_data.last_name,
@@ -81,21 +89,26 @@ def invalid_patch_data(users):
     }
     return data
 
+
 @pytest.fixture
 def users():
     return BaseUserFactory.create_batch(10)
+
 
 @pytest.fixture
 def user(users):
     return users[0]
 
+
 @pytest.fixture
 def admin_token(admin):
     return Token.objects.create(user=admin)
 
+
 @pytest.fixture
 def url():
     return reverse("user-list")
+
 
 @pytest.fixture
 def detail_url(user):

@@ -12,6 +12,7 @@ psycopg2 = "^2.9.6"
 djangorestframework = "^3.14.0"
 ipython = "^8.13.2"
 factory-boy = "^3.2.1"
+pytest-django = "^4.5.2"
 
 
 [build-system]
